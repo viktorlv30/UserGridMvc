@@ -7,13 +7,13 @@ namespace UserGridMvc.BLL.Interface
     {
 
         // create new user and insert to the Db
-        User CreateNewUser(User user);
+        void CreateNewUser(User user);
 
         // update user and insert to the Db
-        User UpdateUser(User user);
+        void UpdateUser(User user);
 
         // delete (make isdeleted = true) 
-        User DeleteUser(User user);
+        void DeleteUser(User user);
 
 
     }

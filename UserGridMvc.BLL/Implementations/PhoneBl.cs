@@ -14,22 +14,19 @@ namespace UserGridMvc.BLL.Implementations
 
         public void AddPhoneToUser(Guid userId, Guid phoneId)
         {
-            //Repository;
+            //need to validate
+            Repository.AddPhoneToUser(userId, phoneId);
         }
 
         public void DeletePhone(Guid userId, Guid phoneId)
         {
-            throw new NotImplementedException();
+            Repository.DeletePhone(userId, phoneId);
         }
 
-        public IEnumerable<Phone> GetAllPhonesByUser(Guid userId)
+        public void UpdatePhone(Phone phone)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool UpdatePhone(Guid phoneId)
-        {
-            throw new NotImplementedException();
+            //need to validate
+            Repository.UpdatePhone(phone);
         }
     }
 }

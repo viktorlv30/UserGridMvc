@@ -13,21 +13,21 @@ namespace UserGridMvc.BLL.Implementations
         }
 
         // create new user and insert to the Db
-        public User CreateNewUser(User user)
+        public void CreateNewUser(User user)
         {
-            throw new NotImplementedException();
-            var newUser = user;
-            return newUser;
+            //need to validate
+            Repository.Add(user);
         }
 
-        public User UpdateUser(User user)
+        public void UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            //need to validate
+            Repository.Update(user);
         }
 
-        public User DeleteUser(User user)
+        public void DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            Repository.Delete(user);
         }
     }
 }
