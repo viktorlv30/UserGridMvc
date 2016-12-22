@@ -3,27 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UserGridMvc.BLL.Implementations;
+using UserGridMvc.DAL.Repositories.Implementations;
+using UserGridMvc.Models;
 
 namespace UserGridMvc.Controllers
 {
     public class UserController : Controller
     {
+        private readonly UserBl _userBl;
+
+        public UserController()
+        {
+            _userBl = new UserBl(new UserRepository());
+        }
+
         // GET: User
         public ActionResult Show()
         {
-            return View("ShowUser");
+            var usersDb = _userBl.GetAll().ToList();
+
+            var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.FirstName);
+
+            return PartialView("UserList", users);
+            //return View("Show");
         }
 
         // GET: User/Details/5
         public ActionResult Details(int id)
         {
-            return View("ShowUser");
+            return PartialView("UserList");
+            //return View("Show");
         }
 
         // GET: User/Create
         public ActionResult Create()
         {
-            return View("ShowUser");
+            return PartialView("UserList");
+            //return View("Show");
         }
 
         // POST: User/Create
@@ -38,14 +55,16 @@ namespace UserGridMvc.Controllers
             }
             catch
             {
-                return View("ShowUser");
+                return PartialView("UserList");
+                //return View("Show");
             }
         }
 
         // GET: User/Edit/5
         public ActionResult Edit(int id)
         {
-            return View("ShowUser");
+            return PartialView("UserList");
+            //return View("Show");
         }
 
         // POST: User/Edit/5
@@ -60,14 +79,16 @@ namespace UserGridMvc.Controllers
             }
             catch
             {
-                return View("ShowUser");
+                return PartialView("UserList");
+                //return View("Show");
             }
         }
 
         // GET: User/Delete/5
         public ActionResult Delete(int id)
         {
-            return View("ShowUser");
+            return PartialView("UserList");
+            //return View("Show");
         }
 
         // POST: User/Delete/5
@@ -82,7 +103,8 @@ namespace UserGridMvc.Controllers
             }
             catch
             {
-                return View("ShowUser");
+                return PartialView("UserList");
+                //return View("Show");
             }
         }
     }
