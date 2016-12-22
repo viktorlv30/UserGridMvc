@@ -4,14 +4,14 @@ using System.Diagnostics;
 
 namespace UserGridMvc.Entity.Entities
 {
-    public class User : DeletableEntity
+    public class User : IdEntity
     {
 
         public User()
         {
             Phones = new List<Phone>();
-            Emails = new List<Phone>();
-            Addresses = new List<Phone>();
+            Emails = new List<Email>();
+            Addresses = new List<Address>();
         }
 
         [MinLength(1, ErrorMessage = "Too short login. Must be 1-50 chars")]
@@ -28,8 +28,8 @@ namespace UserGridMvc.Entity.Entities
 
         //collections of users data
         public virtual ICollection<Phone> Phones { get; set; }
-        public virtual ICollection<Phone> Emails { get; set; }
-        public virtual ICollection<Phone> Addresses { get; set; }
+        public virtual ICollection<Email> Emails { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
 
 
     }

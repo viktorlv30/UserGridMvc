@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserGridMvc.Entity
 {
-    public class IdEntity : IEntity
+    public class IdEntity : DeletableEntity, IEntity
     {
         public IdEntity()
         {

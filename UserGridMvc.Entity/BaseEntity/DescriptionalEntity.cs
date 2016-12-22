@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿//using System.ComponentModel.DataAnnotations;
+
+using System.ComponentModel.DataAnnotations;
 
 namespace UserGridMvc.Entity
 {
@@ -7,7 +9,6 @@ namespace UserGridMvc.Entity
 
         [MinLength(1, ErrorMessage = "Too short login. Must be 1-300 chars")]
         [MaxLength(300, ErrorMessage = "Too long login. Must be 1-300 chars")]
-        [Required]
         public string Description { get; set; }
     }
 }
