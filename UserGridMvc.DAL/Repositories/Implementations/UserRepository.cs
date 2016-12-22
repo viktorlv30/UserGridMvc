@@ -8,24 +8,19 @@ namespace UserGridMvc.DAL.Repositories.Implementations
 {
     public class UserRepository : CrudRepository<User>, IUserRepository
     {
-        //public User GetUserById(Guid id)
-        //{
-        //    return ContextDb.Users.FirstOrDefault(u => u.Id == id);
-        //}
+        public IEnumerable<Phone> GetAllPhonesByUser(Guid userId)
+        {
+            return ContextDb.Phones.Where(p => p.User.Id == userId);
+        }
 
-        //public void UpdateUserById(Guid id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IEnumerable<Address> GetAllAddressesByUser(Guid userId)
+        {
+            return ContextDb.Addresses.Where(p => p.User.Id == userId);
+        }
 
-        //public void DeleteUserById(Guid id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void AddUser(User user)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IEnumerable<Email> GetAllEmailsByUser(Guid userId)
+        {
+            return ContextDb.Emails.Where(p => p.User.Id == userId);
+        }
     }
 }

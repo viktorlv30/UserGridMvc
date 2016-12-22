@@ -6,14 +6,9 @@ namespace UserGridMvc.DAL.Repositories.Interfaces
 {
     public interface IUserRepository : ICrudRepository<User>
     {
-        //List<User> GetAllUsers();
-
-        //User GetUserById(Guid id);
-
-        //void UpdateUserById(Guid id);
-
-        //void DeleteUserById(Guid id);
-
-        //void AddUser(User user);
+        IEnumerable<Phone> GetAllPhonesByUser(Guid userId);
+        IEnumerable<Address> GetAllAddressesByUser(Guid userId);
+        IEnumerable<Email> GetAllEmailsByUser(Guid userId);
+        
     }
 }
