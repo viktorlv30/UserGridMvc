@@ -13,8 +13,8 @@ namespace UserGridMvc.DAL
         public UserGridDbContext() : base("dbConnection")
         {
             //setting Db initializer
-            //Database.SetInitializer(new UserGridInitializer());
-            //Database.Initialize(true);
+            Database.SetInitializer(new UserGridInitializer());
+            Database.Initialize(true);
         }
 
         // Context entities

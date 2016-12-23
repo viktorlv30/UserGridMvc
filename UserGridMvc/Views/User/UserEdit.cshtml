@@ -1,0 +1,39 @@
+﻿@using FormMethod = System.Web.Mvc.FormMethod
+@model UserGridMvc.Models.UserModel
+
+@{
+    ViewBag.Title = "EditUser";
+    Layout = "~/Views/User/Base.cshtml";
+}
+
+<h2>Add new user</h2>
+
+@*<script src="~/kendo/kendo.all.min.js"></script>
+<script src="~/kendo/kendo.aspnetmvc.min.js"></script>
+<script src="~/Scripts/teacher-validation.js"></script>
+<link href="~/kendo/kendo_theme/kendo.bootstrap.min.css" rel="stylesheet" />
+<link href="~/kendo/kendo_theme/kendo.common.min.css" rel="stylesheet" />*@
+<link href="~/Content/UpdateUser.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Create", "User", FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    <h5>Login</h5>
+    @Html.TextBox("Login", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+
+    <h5>User name / ('Mikola Sidorov')</h5>
+    @Html.TextBox("Name", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+    
+    <h5>Phone / (+380...)</h5>
+    @Html.TextBox("Phone", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+    
+    <h5>Email</h5>
+    @Html.TextBox("Email", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+
+    <h5>Address</h5>
+    @Html.TextBox("Address", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+
+    <br />
+    <input class="btn btn-success" type="submit" value="AddUser" id="btn-submit" />
+    @Html.ActionLink("Cancel", "Show", null, new { @class = "btn btn-default" })
+}

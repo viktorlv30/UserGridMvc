@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using UserGridMvc.BLL.Implementations;
@@ -21,9 +22,16 @@ namespace UserGridMvc.Controllers
             _userBl = new UserBl(new UserRepository());
             _temporaryCounter++;
 
+            
             //for grid testing
             if (_temporaryCounter < 0)
             {
+                foreach (var user in _userBl.GetAll().ToList())
+                {
+                    user.IsDeleted = false;
+                    _userBl.UpdateUser(user);
+                }
+
                 _userBl.CreateNewUser(new User
                 {
                     FirstName = "FFFFF",
@@ -85,7 +93,7 @@ namespace UserGridMvc.Controllers
         // GET: User
         public ActionResult Show()
         {
-            var usersDb = _userBl.GetAll().ToList();
+            var usersDb = _userBl.Get(u => u.IsDeleted == false).ToList();
 
             var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
 
@@ -93,83 +101,85 @@ namespace UserGridMvc.Controllers
             //return View("Show");
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return PartialView("UserList");
-            //return View("Show");
-        }
-
-        // GET: User/Create
+        // add user initial screen
+        [HttpGet]
         public ActionResult Create()
         {
-            return PartialView("UserList");
-            //return View("Show");
+            var addTeacherModel = new UserModel();
+            return PartialView("UserEdit", addTeacherModel);
         }
 
-        // POST: User/Create
+        // updating a teaher in the DB
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(UserModel addedUser)
         {
-            try
+            if (addedUser.Name == null || addedUser.Name.Length > 102 ||
+                addedUser.Login == null || addedUser.Login.Length > 50)
             {
-                // TODO: Add insert logic here
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-                return RedirectToAction("Show");
-            }
-            catch
+            var newUser = new User()
             {
-                return PartialView("UserList");
-                //return View("Show");
-            }
+                FirstName = addedUser.Name.Split(' ')[0],
+                LastName = addedUser.Name.Split(' ')[1],
+                Login = addedUser.Login,
+                Address = new Address {PostAddress = addedUser.Address},
+                Phone = new Phone{Number = addedUser.Phone},
+                Email = new Email{Mail= addedUser.Email},
+                
+            };
+
+            _userBl.Insert(newUser);
+
+            return RedirectToAction("Show");
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        // action gets triggered once admin clicked on the Update
+        // button of a particular teacher on the list of teachers
+        [HttpGet]
+        public ActionResult Edit(Guid id)
         {
-            return PartialView("UserList");
-            //return View("Show");
+            var user = _userBl.GetById(id);
+
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var updateUserModel = new UserModel();
+            updateUserModel.ConvertUserToModel(user);
+
+            return PartialView("UserEdit", updateUserModel);
         }
 
-        // POST: User/Edit/5
+        // updating a teaher in the DB
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(UserModel updatedUser)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var user = _userBl.GetById(updatedUser.Id);
 
-                return RedirectToAction("Show");
-            }
-            catch
+            if (user == null)
             {
-                return PartialView("UserList");
-                //return View("Show");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            return RedirectToAction("Show");
         }
 
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        // Delete a user
+        [HttpGet]
+        public ActionResult Delete(Guid id)
         {
-            return PartialView("UserList");
-            //return View("Show");
+            var user = _userBl.GetById(id);
+
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            _userBl.DeleteUser(user);
+            return RedirectToAction("Show");
         }
 
-        // POST: User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Show");
-            }
-            catch
-            {
-                return PartialView("UserList");
-                //return View("Show");
-            }
-        }
     }
 }
