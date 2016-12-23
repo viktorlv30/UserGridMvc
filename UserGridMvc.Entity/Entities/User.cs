@@ -9,9 +9,7 @@ namespace UserGridMvc.Entity.Entities
 
         public User()
         {
-            Phones = new List<Phone>();
-            Emails = new List<Email>();
-            Addresses = new List<Address>();
+            
         }
 
         [MinLength(1, ErrorMessage = "Too short login. Must be 1-50 chars")]
@@ -27,9 +25,9 @@ namespace UserGridMvc.Entity.Entities
         public string LastName { get; set; }
 
         //collections of users data
-        public virtual ICollection<Phone> Phones { get; set; }
-        public virtual ICollection<Email> Emails { get; set; }
-        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual Phone Phone { get; set; }
+        public virtual Email Email { get; set; }
+        public virtual Address Address { get; set; }
 
 
     }

@@ -9,16 +9,16 @@ namespace UserGridMvc.DAL.Repositories.Implementations
     {
         public void AddEmailToUser(Guid userId, Guid emailId)
         {
-            var email = GetById(emailId);
-            email.User = ContextDb.Users.FirstOrDefault(u => u.Id == userId);
-            Update(email); ;
+            //var email = GetById(emailId);
+            //email.User = ContextDb.Users.FirstOrDefault(u => u.Id == userId);
+            //Update(email); ;
         }
 
         public void DeleteEmail(Guid userId, Guid emailId)
         {
-            var email = GetById(emailId);
-            if (userId == email.User.Id)
-                Delete(email);
+            //var email = GetById(emailId);
+            //if (userId == email.User.Id)
+            //    Delete(email);
         }
 
         public void UpdateEmail(Email email)

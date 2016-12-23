@@ -14,14 +14,7 @@ namespace UserGridMvc.DAL
         {
             try
             {
-                var defaultUser = new User()
-                {
-                    Login = "vik",
-                    FirstName = "Vitya",
-                    LastName = "Litvak"
-                };
-                context.Users.Add(defaultUser);
-                context.SaveChanges();
+                
 
                 var defaultPhones = new List<Phone>
                     {
@@ -29,18 +22,18 @@ namespace UserGridMvc.DAL
                         {
                             Number = 979471594,
                             Type = "kyivstar",
-                            User = context.Users.FirstOrDefault(u => u.Login == "vik")
+                            //User = context.Users.FirstOrDefault(u => u.Login == "vik")
                         },
                         new Phone
                         {
                             Number = 630001594,
                             Type = "lifecell",
-                            User = context.Users.FirstOrDefault(u => u.Login == "vik")
+                            //User = context.Users.FirstOrDefault(u => u.Login == "vik")
                         }
                     };
                 foreach (var item in defaultPhones)
                     context.Phones.Add(item);
-                context.SaveChanges();
+                //context.SaveChanges();
 
                 var defaultEmails = new List<Email>
                     {
@@ -48,27 +41,40 @@ namespace UserGridMvc.DAL
                         {
                             Mail = "viktor@piktor.ua",
                             Type = "for spam",
-                            User = context.Users.FirstOrDefault(u => u.Login == "vik")
+                            //User = context.Users.FirstOrDefault(u => u.Login == "vik")
                         },
                         new Email
                         {
                             Mail = "vikysik@love.com",
                             Type = "for love",
-                            User = context.Users.FirstOrDefault(u => u.Login == "vik")
+                            //User = context.Users.FirstOrDefault(u => u.Login == "vik")
                         }
                     };
                 foreach (var item in defaultEmails)
                     context.Emails.Add(item);
-                context.SaveChanges();
+                //context.SaveChanges();
 
                 var defaultAddr = new Address
                 {
                     PostAddress = "21000, 30-A Spacemen, Vinnitsya",
                     Type = "for work",
-                    User = context.Users.FirstOrDefault(u => u.Login == "vik")
+                    //User = context.Users.FirstOrDefault(u => u.Login == "vik")
                 };
 
                 context.Addresses.Add(defaultAddr);
+                context.SaveChanges();
+
+                var defaultUser = new User()
+                {
+                    Login = "vik",
+                    FirstName = "Vitya",
+                    LastName = "Litvak",
+                    Phone = context.Phones.FirstOrDefault(p => p.Number == 630001594),
+                    Email = context.Emails.FirstOrDefault(p => p.Mail == "viktor@piktor.ua"),
+                    Address = context.Addresses.FirstOrDefault(p => p.PostAddress == "21000, 30-A Spacemen, Vinnitsya"),
+
+                };
+                context.Users.Add(defaultUser);
                 context.SaveChanges();
 
             }

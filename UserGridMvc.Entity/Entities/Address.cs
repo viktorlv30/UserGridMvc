@@ -12,7 +12,7 @@ namespace UserGridMvc.Entity.Entities
         [Required]
         public string PostAddress { get; set; }
 
-        [Required]
-        public virtual User User { get; set; }
+        //[Required]
+        //public virtual User User { get; set; }
     }
 }

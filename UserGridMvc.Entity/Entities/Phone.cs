@@ -11,8 +11,8 @@ namespace UserGridMvc.Entity.Entities
         [Required]
         public int Number { get; set; }
 
-        [Required]
-        public virtual User User { get; set; }
+        //[Required]
+        //public virtual User User { get; set; }
 
     }
 }

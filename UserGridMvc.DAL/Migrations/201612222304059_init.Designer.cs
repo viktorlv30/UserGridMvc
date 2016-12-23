@@ -13,7 +13,7 @@ namespace UserGridMvc.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201612212045331_init"; }
+            get { return "201612222304059_init"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UserGridMvc.Entity.Entities;
 
 namespace UserGridMvc.Models
@@ -13,48 +14,33 @@ namespace UserGridMvc.Models
         public string Login { get; set; }
 
         // User name
-        public string FirstName { get; set; }
+        public string Name { get; set; }
         
-        // User surname
-        public string LastName { get; set; }
-
         // user status - IsDeleted
         public bool Status { get; set; }
 
         // user phones
-        public List<Phone> Phones { get; set; }
+        public int Phone { get; set; }
 
         // user emailes
-        public List<Email> Emailes { get; set; }
+        public string Email { get; set; }
 
         // user addresses
-        public List<Address> Addresses { get; set; }
+        public string Address { get; set; }
 
         // convert User to a UserModel for a view
         public UserModel ConvertUserToModel(User userToConvert)
         {
             Id = userToConvert.Id;
             Login = userToConvert.Login;
-            FirstName = userToConvert.FirstName;
-            LastName = userToConvert.LastName;
+            Name = userToConvert.FirstName + " " + userToConvert.LastName;
             Status = userToConvert.IsDeleted ? true : false;
+            Email = userToConvert.Email?.Mail ?? "doesn't have email";
 
-            Phones = new List<Phone>();
-            Emailes = new List<Email>();
-            Addresses = new List<Address>();
+            Email = userToConvert.Email?.Mail ?? "doesn't have email";
+            Phone = userToConvert.Phone?.Number ?? 0;
+            Address = userToConvert.Address?.PostAddress ?? "doesn't have post address";
 
-            foreach (var phone in userToConvert.Phones)
-            {
-                Phones.Add(phone);
-            }
-            foreach (var email in userToConvert.Emails)
-            {
-                Emailes.Add(email);
-            }
-            foreach (var address in userToConvert.Addresses)
-            {
-                Addresses.Add(address);
-            }
 
             return this;
         }

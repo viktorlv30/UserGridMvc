@@ -14,12 +14,12 @@ namespace UserGridMvc.BLL.Implementations
         public void AddAddressToUser(Guid userId, Guid addressId)
         {
             //need to validate
-            Repository.AddAddressToUser(userId, addressId);
+            //Repository.AddAddressToUser(userId, addressId);
         }
 
         public void DeleteAddress(Guid userId, Guid addressId)
         {
-            Repository.DeleteAddress(userId, addressId);
+            //Repository.DeleteAddress(userId, addressId);
         }
 
         public void UpdateAddress(Address address)

@@ -10,16 +10,16 @@ namespace UserGridMvc.DAL.Repositories.Implementations
     {
         public void AddPhoneToUser(Guid userId, Guid phoneId)
         {
-            var phone = GetById(phoneId);
-            phone.User = ContextDb.Users.FirstOrDefault(u => u.Id == userId);
-            Update(phone); ;
+            //var phone = GetById(phoneId);
+            //phone.User = ContextDb.Users.FirstOrDefault(u => u.Id == userId);
+            //Update(phone); ;
         }
 
         public void DeletePhone(Guid userId, Guid phoneId)
         {
-            var phone = GetById(phoneId);
-            if(userId == phone.User.Id)
-                Delete(phone);
+            //var phone = GetById(phoneId);
+            //if(userId == phone.User.Id)
+            //    Delete(phone);
         }
 
         public void UpdatePhone(Phone phone)
