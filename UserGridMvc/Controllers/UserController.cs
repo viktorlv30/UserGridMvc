@@ -20,73 +20,6 @@ namespace UserGridMvc.Controllers
         public UserController()
         {
             _userBl = new UserBl(new UserRepository());
-            _temporaryCounter++;
-
-            
-            //for grid testing
-            if (_temporaryCounter < 0)
-            {
-                foreach (var user in _userBl.GetAll().ToList())
-                {
-                    user.IsDeleted = false;
-                    _userBl.UpdateUser(user);
-                }
-
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "FFFFF",
-                    LastName = "GGGGGGG",
-                    Login = "fffffffff"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "DDD",
-                    LastName = "AAAAA",
-                    Login = "dddddddddd"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "WWWWWWW",
-                    LastName = "QQQQQQQ",
-                    Login = "wwwwwwww"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "TTTTTTT",
-                    LastName = "YYYYYY",
-                    Login = "tttttttt"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "UUUUU",
-                    LastName = "IIIII",
-                    Login = "uuuuuuuu"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "RRRRRRRR",
-                    LastName = "EEEEEEEEE",
-                    Login = "rrrrrrrr"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "IIIIIII",
-                    LastName = "OOOOOOO",
-                    Login = "iiiiiiii"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "TTTTTT",
-                    LastName = "NNNNNN",
-                    Login = "ggggggggg"
-                });
-                _userBl.CreateNewUser(new User
-                {
-                    FirstName = "KKKK",
-                    LastName = "MMMM",
-                    Login = "11111"
-                });
-            }
             
         }
 
@@ -94,6 +27,15 @@ namespace UserGridMvc.Controllers
         public ActionResult Show()
         {
             var usersDb = _userBl.Get(u => u.IsDeleted == false).ToList();
+
+            var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
+
+            return PartialView("UserList", users);
+            //return View("Show");
+        }
+        public ActionResult ShowAll()
+        {
+            var usersDb = _userBl.GetAll().ToList();
 
             var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
 
@@ -113,22 +55,27 @@ namespace UserGridMvc.Controllers
         [HttpPost]
         public ActionResult Create(UserModel addedUser)
         {
-            if (addedUser.Name == null || addedUser.Name.Length > 102 ||
-                addedUser.Login == null || addedUser.Login.Length > 50)
+            if (addedUser.Name?.Trim().Split(' ')[0] == null || addedUser.Name.Trim().Length > 102 || addedUser.Name.Trim().Length < 1
+                || addedUser.Login == null || addedUser.Login.Length > 50 || addedUser.Email == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var newUser = new User()
+            var newUser = new User();
+            newUser.Login = addedUser.Login;
+            newUser.FirstName = addedUser.Name.Trim().Split(' ')[0];
+            newUser.Email = new Email { Mail = addedUser.Email.Trim() };
+            try
             {
-                FirstName = addedUser.Name.Split(' ')[0],
-                LastName = addedUser.Name.Split(' ')[1],
-                Login = addedUser.Login,
-                Address = new Address {PostAddress = addedUser.Address},
-                Phone = new Phone{Number = addedUser.Phone},
-                Email = new Email{Mail= addedUser.Email},
-                
-            };
+                newUser.LastName = addedUser.Name.Trim().Split(' ')[1];
+            }
+            catch
+            {
+                newUser.LastName = null;
+            }
+            
+            newUser.Address = newUser.Address ?? new Address { PostAddress = addedUser.Address };
+            newUser.Phone = newUser.Phone ?? new Phone{Number = addedUser.Phone};
 
             _userBl.Insert(newUser);
 

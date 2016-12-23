@@ -1,5 +1,4 @@
-﻿/// <reference path="jquery-ui-1.12.1.js" />
-/// <autosync enabled="true" />
+﻿/// <autosync enabled="true" />
 /// <reference path="bootstrap.js" />
 /// <reference path="gridmvc.lang.ru.js" />
 /// <reference path="gridmvc.min.js" />

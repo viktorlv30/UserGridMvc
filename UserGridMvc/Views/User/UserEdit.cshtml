@@ -18,6 +18,7 @@
 @using (Html.BeginForm("Create", "User", FormMethod.Post))
 {
     @Html.ValidationSummary()
+
     <h5>Login</h5>
     @Html.TextBox("Login", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
 
@@ -32,6 +33,8 @@
 
     <h5>Address</h5>
     @Html.TextBox("Address", null, new { @class = "form-control", @oninput = "validateAddUserForm()" })
+    
+    <h5>Is user deleted @Html.CheckBox("Status", @Model.Status, new { @class = "", @oninput = "validateAddUserForm()" })</h5> 
 
     <br />
     <input class="btn btn-success" type="submit" value="AddUser" id="btn-submit" />

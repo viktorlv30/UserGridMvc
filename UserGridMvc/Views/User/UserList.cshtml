@@ -1,6 +1,5 @@
-﻿
-
-@using GridMvc.Html
+﻿@using Syncfusion.Mvc.Grid
+@*@using GridMvc.Html
 @using GridMvc.Sorting
 @model IEnumerable<UserGridMvc.Models.UserModel>
 
@@ -37,50 +36,26 @@
         .Sanitized(false)
         .SetWidth(30)
         .RenderValueAs(x => @Html.ActionLink("Delete", "Delete", new { id = x.Id }, new { @class = "btn btn-danger modal-link" }));
-}).WithPaging(5)
+}).WithPaging(5)*@
 
-@*@using Kendo.Mvc.UI
-@using Syncfusion.Mvc.Grid
 
-@(Html.Kendo().Grid<UserGridMvc.Models.UserModel>()
-    .Name("grid")
+
+@*@(Html.Kendo().Grid<UserGridMvc.Models.UserModel>
+    ().Name("persons")
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .Model(model => model.Id(m => m.PersonID))
+    .Read(read => read.Action("GetPersons", "Home"))
+    .Update(up => up.Action("UpdatePerson", "Home"))
+    )
+
     .Columns(columns =>
     {
-        columns.Bound(p => p.Login);
-        columns.Bound(p => p.Name).Width(120);
-        columns.Bound(p => p.Email).Width(120);
-        columns.Bound(p => p.Phone).Width(120);
-        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+    columns.Bound(c => c.PersonID).Width(200);
+    columns.Bound(c => c.Name);
+    columns.Command(cmd => cmd.Edit());
     })
-    .ToolBar(toolbar => toolbar.Create())
-    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+
     .Pageable()
     .Sortable()
-    .Scrollable()
-    .HtmlAttributes(new { style = "height:550px;" })
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(5)
-        .Events(events => events.Error("error_handler"))
-        .Model(model => model.Id(p => p.Id))
-        .Create(update => update.Action("Create", "User"))
-        .Read(read => read.Action("Show", "User"))
-        .Update(update => update.Action("Update", "User"))
-        .Destroy(update => update.Action("Delete", "User"))
-    )
-)
-<script type="text/javascript">
-    function error_handler(e) {
-        if (e.errors) {
-            var message = "Errors:\n";
-            $.each(e.errors, function (key, value) {
-                if ('errors' in value) {
-                    $.each(value.errors, function () {
-                        message += this + "\n";
-                    });
-                }
-            });
-            alert(message);
-        }
-    }
-</script>*@
+    .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("Person"))*@

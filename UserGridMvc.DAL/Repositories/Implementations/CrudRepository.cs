@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using UserGridMvc.DAL.Repositories.Interfaces;
 using UserGridMvc.Entity;
 
@@ -80,7 +82,25 @@ namespace UserGridMvc.DAL.Repositories.Implementations
         // save changes after performing an operation
         public virtual void SaveChanges()
         {
-            ContextDb.SaveChanges();
+            try
+            {
+                ContextDb.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var sb = new StringBuilder();
+
+                foreach (var failure in ex.EntityValidationErrors)
+                {
+                    sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                    foreach (var error in failure.ValidationErrors)
+                    {
+                        sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                        sb.AppendLine();
+                    }
+                }
+                throw new DbEntityValidationException("Entity Validation Failed - errors follow:\n" + sb, ex);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UserGridMvc.DAL.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Type = c.String(maxLength: 200),
-                        PostAddress = c.String(nullable: false),
+                        PostAddress = c.String(),
                         Description = c.String(maxLength: 300),
                         IsDeleted = c.Boolean(nullable: false),
                     })
