@@ -1,0 +1,53 @@
+﻿@model UserGridMvc.Models.UserModel
+
+<h3>User's personal information</h3>
+<br />
+@*@Html.HiddenFor(model => model.Id)*@
+
+<div>
+    @Html.LabelFor(model => model.Login)
+</div>
+<div>
+    @Html.EditorFor(model => model.Login)
+    @Html.ValidationMessageFor(model => model.Login)
+</div>
+
+<div>
+    @Html.LabelFor(model => model.Name)
+</div>
+<div>
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div>
+    @Html.LabelFor(model => model.Phone)
+</div>
+<div>
+    @Html.EditorFor(model => model.Phone)
+    @Html.ValidationMessageFor(model => model.Phone)
+</div>
+
+<div>
+    @Html.LabelFor(model => model.Email)
+</div>
+<div>
+    @Html.EditorFor(model => model.Email)
+    @Html.ValidationMessageFor(model => model.Email)
+</div>
+
+<div>
+    @Html.LabelFor(model => model.Address)
+</div>
+<div>
+    @Html.EditorFor(model => model.Address)
+    @Html.ValidationMessageFor(model => model.Address)
+</div>
+
+<div>
+    Is user deleted 
+    @Html.HiddenFor(model => model.Status) 
+</div>
+<div>
+    @Html.EditorFor(model => model.Status)
+</div>

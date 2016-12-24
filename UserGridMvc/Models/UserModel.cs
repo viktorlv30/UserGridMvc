@@ -34,7 +34,7 @@ namespace UserGridMvc.Models
             Id = userToConvert.Id;
             Login = userToConvert.Login;
             Name = userToConvert.FirstName + " " + userToConvert.LastName;
-            Status = userToConvert.IsDeleted ? true : false;
+            Status = userToConvert.IsDeleted;
             Email = userToConvert.Email?.Mail ?? "doesn't have email";
 
             Email = userToConvert.Email?.Mail ?? "doesn't have email";
@@ -43,6 +43,54 @@ namespace UserGridMvc.Models
 
 
             return this;
+        }
+
+        public static User ConverModelToUser(UserModel modelToConvert)
+        {
+            var newUser = new User();
+
+            newUser.Login = modelToConvert.Login;
+            newUser.FirstName = modelToConvert.Name.Trim().Split(' ')[0];
+            newUser.Email = new Email { Mail = modelToConvert.Email.Trim() };
+            try
+            {
+                newUser.LastName = modelToConvert.Name.Trim().Split(' ')[1];
+            }
+            catch
+            {
+                newUser.LastName = null;
+            }
+
+            newUser.Address = newUser.Address ?? new Address { PostAddress = modelToConvert.Address };
+            newUser.Phone = newUser.Phone ?? new Phone { Number = modelToConvert.Phone };
+
+            return newUser;
+        }
+
+        public void SetChangedData(ref User user)
+        {
+            if (user.IsDeleted != this.Status)
+                user.IsDeleted = this.Status;
+            if (user.Login != this.Login)
+                user.Login = this.Login;
+            if (user.FirstName != this.Name.Trim().Split(' ')[0])
+                user.FirstName = this.Name.Trim().Split(' ')[0];
+            try
+            {
+                if (user.LastName != this.Name.Trim().Split(' ')[1])
+                    user.LastName = this.Name.Trim().Split(' ')[1];
+            }
+            catch
+            {
+                user.LastName = null;
+            }
+            
+            if (user.Phone.Number != this.Phone)
+                user.Phone.Number = this.Phone;
+            if (user.Email.Mail != this.Email)
+                user.Email.Mail = this.Email;
+            if (user.Address.PostAddress != this.Address)
+                user.Address.PostAddress = this.Address;
         }
     }
 }

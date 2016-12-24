@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using UserGridMvc.BLL.Implementations;
 using UserGridMvc.DAL.Repositories.Implementations;
 using UserGridMvc.Entity.Entities;
@@ -16,6 +18,7 @@ namespace UserGridMvc.Controllers
         private readonly UserBl _userBl;
         //this counter for grid testing
         private static int _temporaryCounter = 0;
+        private static bool _isDeletedVisible = false;
 
         public UserController()
         {
@@ -26,20 +29,55 @@ namespace UserGridMvc.Controllers
         // GET: User
         public ActionResult Show()
         {
-            var usersDb = _userBl.Get(u => u.IsDeleted == false).ToList();
+            //var usersDb = _userBl.Get(u => u.IsDeleted == false).ToList();
 
-            var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
+            //var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
 
-            return PartialView("UserList", users);
+            //return PartialView("UserList", users);
+            return PartialView("UserList");
             //return View("Show");
         }
+
+        public ActionResult GetPersons([DataSourceRequest] DataSourceRequest dsRequest)
+        {
+            var usersDb = _userBl.Get(u => u.IsDeleted == _isDeletedVisible).ToList();
+            var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
+            var result = users.ToDataSourceResult(dsRequest);
+
+            _isDeletedVisible = false;
+
+            return Json(result);
+        }
+
+        public ActionResult UpdatePerson([DataSourceRequest] DataSourceRequest dsRequest, UserModel userModel)
+        {
+            //ModelState.Remove(userModel.Id.ToString());
+            //ModelState.Remove(userModel.Status.ToString());
+            //ModelState.Remove(userModel.Phone.ToString());
+            //ModelState.Remove(userModel.Email);
+            //ModelState.Remove(userModel.Address);
+
+            if(ModelState.IsValid)
+            {
+                var userFromDb = _userBl.Get(u => u.Id == userModel.Id).FirstOrDefault();
+                userModel.SetChangedData(ref userFromDb);
+               _userBl.UpdateUser(userFromDb);
+            }
+
+            return Json(ModelState.ToDataSourceResult());
+        }
+
         public ActionResult ShowAll()
         {
-            var usersDb = _userBl.GetAll().ToList();
+            //var usersDb = _userBl.GetAll().ToList();
 
-            var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
+            //var users = usersDb.Select(user => new UserModel()
+            //                    .ConvertUserToModel(user))
+            //                    .ToList()
+            //                    .OrderBy(x => x.Name);
+            _isDeletedVisible = true;
 
-            return PartialView("UserList", users);
+            return PartialView("UserList"/*, users*/);
             //return View("Show");
         }
 
@@ -47,8 +85,8 @@ namespace UserGridMvc.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var addTeacherModel = new UserModel();
-            return PartialView("UserEdit", addTeacherModel);
+            var addUserModel = new UserModel();
+            return PartialView("UserList", addUserModel);
         }
 
         // updating a teaher in the DB
@@ -61,21 +99,7 @@ namespace UserGridMvc.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var newUser = new User();
-            newUser.Login = addedUser.Login;
-            newUser.FirstName = addedUser.Name.Trim().Split(' ')[0];
-            newUser.Email = new Email { Mail = addedUser.Email.Trim() };
-            try
-            {
-                newUser.LastName = addedUser.Name.Trim().Split(' ')[1];
-            }
-            catch
-            {
-                newUser.LastName = null;
-            }
-            
-            newUser.Address = newUser.Address ?? new Address { PostAddress = addedUser.Address };
-            newUser.Phone = newUser.Phone ?? new Phone{Number = addedUser.Phone};
+            var newUser = UserModel.ConverModelToUser(addedUser);
 
             _userBl.Insert(newUser);
 
@@ -97,10 +121,10 @@ namespace UserGridMvc.Controllers
             var updateUserModel = new UserModel();
             updateUserModel.ConvertUserToModel(user);
 
-            return PartialView("UserEdit", updateUserModel);
+            return PartialView("UserList", updateUserModel);
         }
 
-        // updating a teaher in the DB
+        // updating a user in the DB
         [HttpPost]
         public ActionResult Edit(UserModel updatedUser)
         {
