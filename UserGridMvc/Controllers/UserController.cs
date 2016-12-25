@@ -4,8 +4,11 @@ using System.Web.Mvc;
 using AutoMapper;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using UserGridMvc.BLL;
 using UserGridMvc.BLL.Implementations;
+using UserGridMvc.BLL.Interface;
 using UserGridMvc.DAL.Repositories.Implementations;
+using UserGridMvc.Entity;
 using UserGridMvc.Entity.Entities;
 using UserGridMvc.Models;
 using UserGridMvc.Util;
@@ -20,7 +23,6 @@ namespace UserGridMvc.Controllers
         public UserController()
         {
             _userBl = new UserBl(new UserRepository());
-
         }
 
         public ActionResult Show()
