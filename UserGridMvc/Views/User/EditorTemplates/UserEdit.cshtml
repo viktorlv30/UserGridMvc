@@ -2,7 +2,6 @@
 
 <h3>User's personal information</h3>
 <br />
-@*@Html.HiddenFor(model => model.Id)*@
 
 <div>
     @Html.LabelFor(model => model.Login)
@@ -32,7 +31,7 @@
     @Html.LabelFor(model => model.Email)
 </div>
 <div>
-    @Html.EditorFor(model => model.Email)
+    @Html.TextBoxFor(model => model.Email, new { @class = "k-textbox", type = "email" })
     @Html.ValidationMessageFor(model => model.Email)
 </div>
 
@@ -45,8 +44,7 @@
 </div>
 
 <div>
-    Is user deleted 
-    @Html.HiddenFor(model => model.Status) 
+    @Html.LabelFor(model => model.Status) 
 </div>
 <div>
     @Html.EditorFor(model => model.Status)

@@ -29,21 +29,6 @@ namespace UserGridMvc.Entity.Entities
         public virtual Phone Phone { get; set; }
         public virtual Email Email { get; set; }
         public virtual Address Address { get; set; }
-
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    var errors = new List<ValidationResult>();
-        //    if (val1 < 0)
-        //    {
-        //        errors.Add(new ValidationResult("val1 can't be negative", new List<string> { "val2" }));
-        //    }
-        //    if (val2 < 0)
-        //    {
-        //        errors.Add(new ValidationResult("val2 can't be negative", new List<string> { "val2" }));
-        //    }
-        //    return errors;
-        //}
-
     }
     
 

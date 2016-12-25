@@ -8,7 +8,17 @@
 <h2>Users</h2>
 
 @(Html.Kendo().Grid<UserGridMvc.Models.UserModel>().Name("users")
-        .Columns(columns =>
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(5)
+        .Events(events => events.Error("error_handler"))
+        .Model(model => model.Id(m => m.Id))
+            .Create(update => update.Action("Create", "User"))
+            .Read(read => read.Action("GetPersons", "User"))
+            .Update(update => update.Action("UpdatePerson", "User"))
+            .Destroy(update => update.Action("Delete", "User"))
+    )
+    .Columns(columns =>
         {
             columns.Bound(c => c.Login);
             columns.Bound(c => c.Name);
@@ -22,18 +32,6 @@
     .Sortable()
     .Groupable()
     .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("UserEdit"))
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(5)
-        .Events(events => events.Error("error_handler"))
-        .Model(model => model.Id(m => m.Id))
-            .Create(update => update.Action("Create", "User"))
-            .Read(read => read.Action("GetPersons", "User"))
-            .Update(update => update.Action("UpdatePerson", "User"))
-            .Destroy(update => update.Action("Delete", "User"))
-    )
-
-
 )
 
 <script type="text/javascript">

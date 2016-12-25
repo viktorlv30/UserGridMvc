@@ -10,32 +10,23 @@ using UserGridMvc.BLL.Implementations;
 using UserGridMvc.DAL.Repositories.Implementations;
 using UserGridMvc.Entity.Entities;
 using UserGridMvc.Models;
+using UserGridMvc.Util;
 
 namespace UserGridMvc.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserBl _userBl;
-        //this counter for grid testing
-        private static int _temporaryCounter = 0;
         private static bool _isDeletedVisible = false;
 
         public UserController()
         {
             _userBl = new UserBl(new UserRepository());
-            
         }
 
-        // GET: User
         public ActionResult Show()
         {
-            //var usersDb = _userBl.Get(u => u.IsDeleted == false).ToList();
-
-            //var users = usersDb.Select(user => new UserModel().ConvertUserToModel(user)).ToList().OrderBy(x => x.Status).ThenBy(x => x.Name);
-
-            //return PartialView("UserList", users);
             return PartialView("UserList");
-            //return View("Show");
         }
 
         public ActionResult GetPersons([DataSourceRequest] DataSourceRequest dsRequest)
@@ -51,90 +42,61 @@ namespace UserGridMvc.Controllers
 
         public ActionResult UpdatePerson([DataSourceRequest] DataSourceRequest dsRequest, UserModel userModel)
         {
-            //ModelState.Remove(userModel.Id.ToString());
-            //ModelState.Remove(userModel.Status.ToString());
-            //ModelState.Remove(userModel.Phone.ToString());
-            //ModelState.Remove(userModel.Email);
-            //ModelState.Remove(userModel.Address);
-
-            if(ModelState.IsValid)
+            var userToUpdate = UserModel.ConverModelToUser(userModel);
+            var helper = new Helper();
+            if (ModelState.IsValid && helper.IsUserValid(userToUpdate))
             {
                 var userFromDb = _userBl.Get(u => u.Id == userModel.Id).FirstOrDefault();
                 userModel.SetChangedData(ref userFromDb);
-               _userBl.UpdateUser(userFromDb);
+                _userBl.UpdateUser(userFromDb);
+                return RedirectToAction("Show");
             }
-
-            return RedirectToAction("Show");
+            else
+            {
+                ModelState.AddModelError(/* Property name */ "Update", /* Validation message */ "Update user error");
+                return Json(ModelState.ToDataSourceResult());
+            }
         }
 
         public ActionResult ShowAll()
         {
-            //var usersDb = _userBl.GetAll().ToList();
-
-            //var users = usersDb.Select(user => new UserModel()
-            //                    .ConvertUserToModel(user))
-            //                    .ToList()
-            //                    .OrderBy(x => x.Name);
             _isDeletedVisible = true;
-
-            return PartialView("UserList"/*, users*/);
-            //return View("Show");
-        }
-
-        // add user initial screen
-        [HttpGet]
-        public ActionResult Create()
-        {
-            var addUserModel = new UserModel();
             return PartialView("UserList");
         }
 
-        // updating a user in the DB
+        // create a user
         [HttpPost]
         public ActionResult Create(UserModel addedUser)
         {
-            if (addedUser.Name?.Trim().Split(' ')[0] == null || addedUser.Name.Trim().Length > 102 || addedUser.Name.Trim().Length < 1
-                || addedUser.Login == null || addedUser.Login.Length > 50 || addedUser.Email == null)
+            ModelState.Remove("Id");
+            var userToCreate = UserModel.ConverModelToUser(addedUser);
+            var helper = new Helper();
+
+            if (ModelState.IsValid && helper.IsUserValid(userToCreate))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var newUser = UserModel.ConverModelToUser(addedUser);
+                var isSameUserAlreadyExist = _userBl.IsSuchUserExist(newUser);
+
+                if (!isSameUserAlreadyExist)
+                    _userBl.Insert(newUser);
+
+                return RedirectToAction("Show");
             }
-
-            var newUser = UserModel.ConverModelToUser(addedUser);
-
-            _userBl.Insert(newUser);
-
-            return RedirectToAction("Show");
+            else
+            {
+                ModelState.AddModelError(/* Property name */ "Create", /* Validation message */ "Create user error");
+                return Json(ModelState.ToDataSourceResult());
+            }
         }
 
-
-        
-        // Delete a user
-        //[HttpGet]
-        //public ActionResult Delete(Guid id)
-        //{
-        //    var user = _userBl.GetById(id);
-
-        //    if (user == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    _userBl.DeleteUser(user);
-        //    return RedirectToAction("Show");
-        //}
 
         [HttpPost]
         public ActionResult Delete([DataSourceRequest] DataSourceRequest dsRequest, UserModel userModel)
         {
-            //ModelState.Remove(userModel.Id.ToString());
-            //ModelState.Remove(userModel.Status.ToString());
-            //ModelState.Remove(userModel.Phone.ToString());
-            //ModelState.Remove(userModel.Email);
-            //ModelState.Remove(userModel.Address);
-
             var userFromDb = _userBl.Get(u => u.Id == userModel.Id).FirstOrDefault();
             _userBl.DeleteUser(userFromDb);
 
-            return RedirectToAction("Show");
+            return RedirectToAction("ShowAll");
         }
 
     }

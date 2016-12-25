@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 using UserGridMvc.Entity.Entities;
 
 namespace UserGridMvc.Models
@@ -16,24 +16,40 @@ namespace UserGridMvc.Models
 
         // User login
         [Required]
-        [DisplayName("User's login")]
-        [StringLength(50, ErrorMessage = "Login should be 1-50 characters")]
+        [DisplayName("Логин")]
+        [StringLength(50, ErrorMessage = "Введите логин от 1 до 50 символов")]
         public string Login { get; set; }
 
         // User name
+        [Required]
+        [DisplayName("Полное Имя")]
+        [StringLength(50, ErrorMessage = "Введит имя от 1 до 50 символов ('Вася Пупкин')")]
         public string Name { get; set; }
-        
+
         // user status - IsDeleted
+        [DisplayName("Удалить пользователя?")]
         public bool Status { get; set; }
 
         // user phones
+        [DisplayName("Телефон (+380..)")]
+        [Range(0, int.MaxValue, ErrorMessage = "Номер должен иметь 9 цифр")]
         public int Phone { get; set; }
 
         // user emailes
+        [Required]
+        [DisplayName("Email")]
+        [StringLength(200, ErrorMessage = "Введит email от 1 до 200 символов")]
         public string Email { get; set; }
 
         // user addresses
+        [DisplayName("Почтовый адрес")]
+        [StringLength(200, ErrorMessage = "Введит адрес от 1 до 200 символов")]
         public string Address { get; set; }
+
+        public UserModel()
+        {
+            Id = Guid.NewGuid();
+        }
 
         // convert User to a UserModel for a view
         public UserModel ConvertUserToModel(User userToConvert)
@@ -42,12 +58,10 @@ namespace UserGridMvc.Models
             Login = userToConvert.Login;
             Name = userToConvert.FirstName + " " + userToConvert.LastName;
             Status = userToConvert.IsDeleted;
-            Email = userToConvert.Email?.Mail ?? "doesn't have email";
 
-            Email = userToConvert.Email?.Mail ?? "doesn't have email";
+            Email = userToConvert.Email?.Mail ?? "";
             Phone = userToConvert.Phone?.Number ?? 0;
-            Address = userToConvert.Address?.PostAddress ?? "doesn't have post address";
-
+            Address = userToConvert.Address?.PostAddress ?? "";
 
             return this;
         }
@@ -99,5 +113,7 @@ namespace UserGridMvc.Models
             if (user.Address.PostAddress != this.Address)
                 user.Address.PostAddress = this.Address;
         }
+
+        
     }
 }

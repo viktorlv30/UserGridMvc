@@ -582,6 +582,10 @@
       <Project>{9E8EFF3A-4354-41C0-AFDA-6F5E9AD88C53}</Project>
       <Name>UserGridMvc.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserGridMvc.Util\UserGridMvc.Util.csproj">
+      <Project>{62d0c8cf-e745-425b-b249-28f79c969e0b}</Project>
+      <Name>UserGridMvc.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -43,6 +43,20 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UserGridMvc.BLL\UserGridMvc.BLL.csproj">
+      <Project>{8b241877-98f3-4fe7-84f9-2bee46db11d5}</Project>
+      <Name>UserGridMvc.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserGridMvc.DAL\UserGridMvc.DAL.csproj">
+      <Project>{e73edbe4-b6ab-4556-8c67-b7d86a0b1d74}</Project>
+      <Name>UserGridMvc.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserGridMvc.Entity\UserGridMvc.Entity.csproj">
+      <Project>{9e8eff3a-4354-41c0-afda-6f5e9ad88c53}</Project>
+      <Name>UserGridMvc.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

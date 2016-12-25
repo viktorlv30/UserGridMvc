@@ -15,6 +15,7 @@ namespace UserGridMvc.BLL.Interface
         // delete (make isdeleted = true) 
         void DeleteUser(User user);
 
+        bool IsSuchUserExist(User user);
 
     }
 }

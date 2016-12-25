@@ -29,5 +29,21 @@ namespace UserGridMvc.BLL.Implementations
         {
             Repository.Delete(user);
         }
+
+        public bool IsSuchUserExist(User newUser)
+        {
+            var findUser = Repository.Get(u =>
+                u.Login == newUser.Login &&
+                u.FirstName == newUser.FirstName &&
+                u.LastName == newUser.LastName &&
+                u.Phone.Number == newUser.Phone.Number &&
+                u.Phone.Type == newUser.Phone.Type &&
+                u.Email.Mail == newUser.Email.Mail &&
+                u.Email.Type == newUser.Email.Type &&
+                u.Address.PostAddress == newUser.Address.PostAddress &&
+                u.Address.Type == newUser.Address.Type &&
+                u.IsDeleted == newUser.IsDeleted).FirstOrDefault();
+            return findUser != null;
+        }
     }
 }
