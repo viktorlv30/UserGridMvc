@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UserGridMvc.BLL.Interface;
 using UserGridMvc.DAL.Repositories.Interfaces;
 using UserGridMvc.Entity.Entities;

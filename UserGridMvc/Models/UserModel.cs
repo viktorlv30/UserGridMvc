@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Mvc;
 using UserGridMvc.Entity.Entities;
 
@@ -45,6 +43,11 @@ namespace UserGridMvc.Models
         [DisplayName("Почтовый адрес")]
         [StringLength(200, ErrorMessage = "Введит адрес от 1 до 200 символов")]
         public string Address { get; set; }
+
+        public UserModel()
+        {
+            Id = Guid.NewGuid();
+        }
 
         public void SetChangedData(ref User user)
         {

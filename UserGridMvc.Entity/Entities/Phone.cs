@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserGridMvc.Entity.Entities
 {
@@ -10,8 +9,6 @@ namespace UserGridMvc.Entity.Entities
 
         public int Number { get; set; }
 
-        //[Required]
-        //public virtual User User { get; set; }
 
     }
 }

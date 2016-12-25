@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UserGridMvc.BLL.Implementations;
 using UserGridMvc.DAL.Repositories.Implementations;
 using UserGridMvc.Entity.Entities;
@@ -43,7 +39,7 @@ namespace UserGridMvc.Util
 
         public bool IsValidName(string name)
         {
-            Regex r = new Regex("^[a-zA-Z_ ]*$");
+            Regex r = new Regex("^[a-zA-Zа-яА-ЯёЁ'_ ]*$");
             if (r.IsMatch(name))
             {
                 return true;

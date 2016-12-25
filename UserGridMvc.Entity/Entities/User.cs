@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Web.ModelBinding;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UserGridMvc.Entity.Entities
 {

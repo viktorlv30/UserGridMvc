@@ -1,5 +1,4 @@
-﻿using System;
-using UserGridMvc.Entity.Entities;
+﻿using UserGridMvc.Entity.Entities;
 
 namespace UserGridMvc.BLL.Interface
 {

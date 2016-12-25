@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserGridMvc.Entity.Entities
 {
@@ -11,7 +10,5 @@ namespace UserGridMvc.Entity.Entities
 
         public string PostAddress { get; set; }
 
-        //[Required]
-        //public virtual User User { get; set; }
     }
 }
