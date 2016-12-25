@@ -64,7 +64,7 @@ namespace UserGridMvc.Controllers
                _userBl.UpdateUser(userFromDb);
             }
 
-            return Json(ModelState.ToDataSourceResult());
+            return RedirectToAction("Show");
         }
 
         public ActionResult ShowAll()
@@ -86,10 +86,10 @@ namespace UserGridMvc.Controllers
         public ActionResult Create()
         {
             var addUserModel = new UserModel();
-            return PartialView("UserList", addUserModel);
+            return PartialView("UserList");
         }
 
-        // updating a teaher in the DB
+        // updating a user in the DB
         [HttpPost]
         public ActionResult Create(UserModel addedUser)
         {
@@ -106,49 +106,34 @@ namespace UserGridMvc.Controllers
             return RedirectToAction("Show");
         }
 
-        // action gets triggered once admin clicked on the Update
-        // button of a particular teacher on the list of teachers
-        [HttpGet]
-        public ActionResult Edit(Guid id)
-        {
-            var user = _userBl.GetById(id);
 
-            if (user == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var updateUserModel = new UserModel();
-            updateUserModel.ConvertUserToModel(user);
-
-            return PartialView("UserList", updateUserModel);
-        }
-
-        // updating a user in the DB
-        [HttpPost]
-        public ActionResult Edit(UserModel updatedUser)
-        {
-            var user = _userBl.GetById(updatedUser.Id);
-
-            if (user == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return RedirectToAction("Show");
-        }
-
+        
         // Delete a user
-        [HttpGet]
-        public ActionResult Delete(Guid id)
-        {
-            var user = _userBl.GetById(id);
+        //[HttpGet]
+        //public ActionResult Delete(Guid id)
+        //{
+        //    var user = _userBl.GetById(id);
 
-            if (user == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            _userBl.DeleteUser(user);
+        //    if (user == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    _userBl.DeleteUser(user);
+        //    return RedirectToAction("Show");
+        //}
+
+        [HttpPost]
+        public ActionResult Delete([DataSourceRequest] DataSourceRequest dsRequest, UserModel userModel)
+        {
+            //ModelState.Remove(userModel.Id.ToString());
+            //ModelState.Remove(userModel.Status.ToString());
+            //ModelState.Remove(userModel.Phone.ToString());
+            //ModelState.Remove(userModel.Email);
+            //ModelState.Remove(userModel.Address);
+
+            var userFromDb = _userBl.Get(u => u.Id == userModel.Id).FirstOrDefault();
+            _userBl.DeleteUser(userFromDb);
+
             return RedirectToAction("Show");
         }
 

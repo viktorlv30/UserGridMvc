@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using UserGridMvc.Entity.Entities;
 
 namespace UserGridMvc.Models
@@ -8,9 +11,13 @@ namespace UserGridMvc.Models
     public class UserModel
     {
         // User ID
+        [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
 
         // User login
+        [Required]
+        [DisplayName("User's login")]
+        [StringLength(50, ErrorMessage = "Login should be 1-50 characters")]
         public string Login { get; set; }
 
         // User name
