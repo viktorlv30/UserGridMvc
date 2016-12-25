@@ -44,6 +44,7 @@ namespace UserGridMvc.Controllers
         {
             var userToUpdate = UserModel.ConverModelToUser(userModel);
             var helper = new Helper();
+            ModelState.Remove("Phone");
             if (ModelState.IsValid && helper.IsUserValid(userToUpdate))
             {
                 var userFromDb = _userBl.Get(u => u.Id == userModel.Id).FirstOrDefault();
@@ -69,6 +70,7 @@ namespace UserGridMvc.Controllers
         public ActionResult Create(UserModel addedUser)
         {
             ModelState.Remove("Id");
+            ModelState.Remove("Phone");
             var userToCreate = UserModel.ConverModelToUser(addedUser);
             var helper = new Helper();
 

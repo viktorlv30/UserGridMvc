@@ -28,20 +28,17 @@ namespace UserGridMvc.Util
 
         public bool IsUserEntityValid(User user)
         {
-            if (!IsUniqueLogin(user.Login.Trim()) || user.Login.Trim().Length >= 50)
-                return false;
             if (!IsValidName(user.FirstName.Trim()) || user.FirstName.Trim().Length >= 50)
                 return false;
-            if (!IsValidName(user.LastName.Trim()) || user.LastName.Trim().Length >= 50)
+            if (user.LastName != null && (!IsValidName(user.LastName.Trim()) || user.LastName.Trim().Length >= 50))
                 return false;
-
             return true;
         }
 
         public bool IsUniqueLogin(string login)
         {
             var userBl = new UserBl(new UserRepository());
-            return userBl.Get(x => x.Login == login).Any();
+            return !userBl.Get(x => x.Login == login).Any();
         }
 
         public bool IsValidName(string name)
@@ -80,19 +77,20 @@ namespace UserGridMvc.Util
 
         public bool IsAddressValid(Address address)
         {
-            var isValid = true;
             if (!IsTypeCommunicationValid(address.Type))
                 return false;
+            if(address.PostAddress != null && address.PostAddress.Trim().Length > 200)
+                return false;
 
-            isValid = address.PostAddress != null && address.PostAddress.Trim().Length >= 0 
-                && address.PostAddress.Trim().Length < 200;
-
-            return isValid;
+            return true;
         }
 
         public bool IsTypeCommunicationValid(string type)
         {
-            return type == null || type.Length < 200;
+            if (type != null && type.Length > 200)
+                return false;
+
+            return true;
         }
     }
 }
