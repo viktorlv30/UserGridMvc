@@ -46,48 +46,6 @@ namespace UserGridMvc.Models
         [StringLength(200, ErrorMessage = "Введит адрес от 1 до 200 символов")]
         public string Address { get; set; }
 
-        public UserModel()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        // convert User to a UserModel for a view
-        public UserModel ConvertUserToModel(User userToConvert)
-        {
-            Id = userToConvert.Id;
-            Login = userToConvert.Login;
-            Name = userToConvert.FirstName + " " + userToConvert.LastName;
-            Status = userToConvert.IsDeleted;
-
-            Email = userToConvert.Email?.Mail ?? "";
-            Phone = userToConvert.Phone?.Number ?? 0;
-            Address = userToConvert.Address?.PostAddress ?? "";
-
-            return this;
-        }
-
-        public static User ConverModelToUser(UserModel modelToConvert)
-        {
-            var newUser = new User();
-
-            newUser.Login = modelToConvert.Login;
-            newUser.FirstName = modelToConvert.Name.Trim().Split(' ')[0];
-            newUser.Email = new Email { Mail = modelToConvert.Email.Trim() };
-            try
-            {
-                newUser.LastName = modelToConvert.Name.Trim().Split(' ')[1];
-            }
-            catch
-            {
-                newUser.LastName = null;
-            }
-
-            newUser.Address = newUser.Address ?? new Address { PostAddress = modelToConvert.Address };
-            newUser.Phone = newUser.Phone ?? new Phone { Number = modelToConvert.Phone };
-
-            return newUser;
-        }
-
         public void SetChangedData(ref User user)
         {
             if (user.IsDeleted != this.Status)
@@ -113,7 +71,5 @@ namespace UserGridMvc.Models
             if (user.Address.PostAddress != this.Address)
                 user.Address.PostAddress = this.Address;
         }
-
-        
     }
 }
